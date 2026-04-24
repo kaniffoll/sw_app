@@ -36,6 +36,7 @@ android {
 dependencies {
     implementation(project(":domain"))
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.ktor.client.android)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

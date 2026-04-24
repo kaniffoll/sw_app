@@ -1,6 +1,7 @@
 package com.kaniffoll.domain.model
 
 data class Species(
+    val id: Int,
     val name: String,
     val classification: String,
     val designation: String,

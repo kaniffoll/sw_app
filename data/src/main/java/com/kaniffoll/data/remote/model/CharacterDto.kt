@@ -16,6 +16,6 @@ data class CharacterDto(
     val films: List<String>,
     val species: List<String>,
     val vehicles: List<String>,
-    val starships: List<String>
+    val starships: List<String>,
+    val url: String
 )
-

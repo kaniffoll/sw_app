@@ -1,6 +1,7 @@
 package com.kaniffoll.domain.model
 
 data class Film(
+    val id: Int,
     val title: String,
     val episodeId: Int,
     val openingCrawl: String,

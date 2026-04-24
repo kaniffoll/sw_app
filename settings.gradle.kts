@@ -26,3 +26,4 @@ rootProject.name = "SW Application"
 include(":presentation")
 include(":data")
 include(":domain")
+include(":di")
