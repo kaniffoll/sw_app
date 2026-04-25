@@ -1,6 +1,5 @@
 package com.kaniffoll.swapplication.ui.screens.character
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kaniffoll.domain.model.Character

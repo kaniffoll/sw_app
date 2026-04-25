@@ -8,4 +8,8 @@ object Dimens {
     val medium = 16.dp
     val medium2 = 24.dp
     val large = 32.dp
+
+    ///
+
+    val progressIndicatorHeight = 64.dp
 }
