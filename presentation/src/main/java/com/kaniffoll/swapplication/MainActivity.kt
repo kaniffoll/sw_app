@@ -22,7 +22,6 @@ class MainActivity : ComponentActivity() {
             .appComponent(appComponent)
             .build()
             .inject(this)
-        enableEdgeToEdge()
         setContent {
             SWApplicationTheme {
                 CharactersList(charactersListViewModel)

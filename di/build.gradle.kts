@@ -38,7 +38,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(libs.dagger)
     ksp(libs.dagger.compiler)
-    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.okhttp)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
