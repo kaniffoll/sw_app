@@ -7,7 +7,7 @@ import dagger.Component
 import jakarta.inject.Singleton
 
 @Singleton
-@Component(modules = [RepoModule::class, ApiModule::class, RemoteModule::class])
+@Component(modules = [RepoModule::class, ApiModule::class, RemoteModule::class, DBModule::class])
 interface AppComponent {
 
     fun getCharactersUseCase(): GetCharactersUseCase

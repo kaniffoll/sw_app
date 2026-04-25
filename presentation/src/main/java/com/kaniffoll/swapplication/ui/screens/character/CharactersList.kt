@@ -57,7 +57,7 @@ private fun CharacterCard(
         shape = ShapeDefaults.Small
     ) {
         Text(
-            modifier = Modifier.padding(Dimens.small),
+            modifier = Modifier.padding(Dimens.medium),
             text = character.name
         )
     }
