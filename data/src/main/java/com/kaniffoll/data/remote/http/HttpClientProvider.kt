@@ -8,6 +8,7 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 import java.security.SecureRandom
 import javax.net.ssl.SSLContext
 
@@ -16,7 +17,11 @@ class HttpClientProvider {
         // Причина по которoй используeтся OkHttp а не Android описана ниже
         HttpClient(OkHttp) {
             install(ContentNegotiation) {
-                json()
+                json(
+                    Json {
+                        ignoreUnknownKeys = true
+                    }
+                )
             }
             install(Logging) {
                 logger = Logger.ANDROID
