@@ -1,5 +1,6 @@
 package com.kaniffoll.swapplication.ui.screens.character
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kaniffoll.domain.model.Character
@@ -19,6 +20,7 @@ class CharactersListViewModel @Inject constructor(private val getCharactersUseCa
         viewModelScope.launch {
             try {
                 val result = getCharactersUseCase(nextUrl)
+
 
                 result.fold(
                     onSuccess = {

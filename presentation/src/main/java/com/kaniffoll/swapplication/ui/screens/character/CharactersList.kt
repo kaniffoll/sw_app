@@ -3,11 +3,13 @@ package com.kaniffoll.swapplication.ui.screens.character
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,12 +28,13 @@ fun CharactersList(
     val paginationState = viewModel.paginationState
 
     PaginatedLazyColumn(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = Dimens.medium),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(Dimens.small),
+        verticalArrangement = Arrangement.spacedBy(Dimens.small2),
         paginationState = paginationState,
         firstPageProgressIndicator = { CircularProgressIndicator() },
-        newPageEmptyIndicator = { CircularProgressIndicator() },
         firstPageErrorIndicator = { e ->
             ErrorIndicator(e) { paginationState.retryLastFailedRequest() }
         },
@@ -52,7 +55,10 @@ fun CharacterCard(
     character: Character,
     modifier: Modifier = Modifier
 ) {
-    OutlinedCard(modifier = modifier) {
+    OutlinedCard(
+        modifier = modifier.fillMaxWidth(),
+        shape = ShapeDefaults.Small
+    ) {
         Text(
             modifier = Modifier.padding(Dimens.small),
             text = character.name
