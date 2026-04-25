@@ -5,15 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.kaniffoll.domain.model.Character
 import com.kaniffoll.domain.usecase.GetCharactersUseCase
 import io.github.ahmad_hamwi.compose.pagination.PaginationState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CharactersListViewModel(private val getCharactersUseCase: GetCharactersUseCase) :
+class CharactersListViewModel @Inject constructor(private val getCharactersUseCase: GetCharactersUseCase) :
     ViewModel() {
-    private var _characters = MutableStateFlow(emptyList<Character>())
-    val characters = _characters.asStateFlow()
-
     val paginationState = PaginationState<String?, Character>(
         initialPageKey = null,
         onRequestPage = { loadPage(it) }

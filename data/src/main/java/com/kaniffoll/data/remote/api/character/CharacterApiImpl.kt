@@ -4,13 +4,12 @@ import com.kaniffoll.data.remote.RemoteRes.BASE_URL
 import com.kaniffoll.data.remote.RemoteRes.PEOPLE_PATH
 import com.kaniffoll.data.remote.model.ApiResponse
 import com.kaniffoll.data.remote.model.CharacterDto
-import com.kaniffoll.data.session.CacheHolder
-import com.kaniffoll.data.session.CacheState
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import jakarta.inject.Inject
 
-class CharacterApiImpl(
+class CharacterApiImpl @Inject constructor(
     private val client: HttpClient
 ) : CharacterApi {
 

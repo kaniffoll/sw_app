@@ -7,8 +7,9 @@ import com.kaniffoll.data.remote.model.utils.toCharacter
 import com.kaniffoll.domain.model.Character
 import com.kaniffoll.domain.model.Page
 import com.kaniffoll.domain.repo.CharacterRepository
+import jakarta.inject.Inject
 
-class CharacterRepositoryImpl(
+class CharacterRepositoryImpl @Inject constructor(
     private val api: CharacterApi
 ) : CharacterRepository {
     override suspend fun getCharacters(url: String?): Result<Page<Character>> {
