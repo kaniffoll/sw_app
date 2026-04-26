@@ -56,7 +56,10 @@ private fun MainContent(
     character: Character,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = modifier.padding(Dimens.medium)) {
+    LazyColumn(
+        modifier = modifier.padding(Dimens.medium),
+        verticalArrangement = Arrangement.spacedBy(Dimens.medium)
+    ) {
         item {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -79,6 +82,68 @@ private fun MainContent(
                 }
             }
         }
+
+        item {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(Dimens.small2)
+            ) {
+                Text(stringResource(R.string.species))
+                if (character.species.isEmpty()) {
+                    NoInfoCard()
+                } else {
+                    character.species.forEach {
+                        InfoCard(title = it.name, subTitle = it.classification)
+                    }
+                }
+            }
+        }
+
+        item {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(Dimens.small2)
+            ) {
+                Text(stringResource(R.string.films))
+                if (character.films.isEmpty()) {
+                    NoInfoCard()
+                } else {
+                    character.films.forEach {
+                        InfoCard(title = it.title, subTitle = it.openingCrawl)
+                    }
+                }
+            }
+        }
+
+        item {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(Dimens.small2)
+            ) {
+                Text(stringResource(R.string.additional_information))
+                InfoCard(
+                    title = stringResource(R.string.hair_color),
+                    subTitle = character.hairColor
+                )
+                InfoCard(
+                    title = stringResource(R.string.eye_color),
+                    subTitle = character.eyeColor
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun NoInfoCard(modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = ShapeDefaults.Small,
+    ) {
+        Text(
+            modifier = Modifier.padding(Dimens.medium),
+            text = stringResource(R.string.no_info)
+        )
     }
 }
 
