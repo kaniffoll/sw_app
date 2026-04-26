@@ -6,12 +6,16 @@ import com.kaniffoll.data.local.RoomRes
 import com.kaniffoll.data.local.SWDatabase
 import com.kaniffoll.data.remote.api.character.CharacterApi
 import com.kaniffoll.data.remote.api.character.CharacterApiImpl
+import com.kaniffoll.data.remote.api.film.FilmApi
+import com.kaniffoll.data.remote.api.film.FilmApiImpl
 import com.kaniffoll.data.remote.api.palnet.PlanetApi
 import com.kaniffoll.data.remote.api.palnet.PlanetApiImpl
 import com.kaniffoll.data.remote.http.HttpClientProvider
 import com.kaniffoll.data.repo.CharacterRepositoryImpl
+import com.kaniffoll.data.repo.FilmRepositoryImpl
 import com.kaniffoll.data.repo.PlanetRepositoryImpl
 import com.kaniffoll.domain.repo.CharacterRepository
+import com.kaniffoll.domain.repo.FilmRepository
 import com.kaniffoll.domain.repo.PlanetRepository
 import dagger.Binds
 import dagger.Module
@@ -26,6 +30,9 @@ interface RepoModule {
 
     @Binds
     fun bindsPlanetRepository(impl: PlanetRepositoryImpl): PlanetRepository
+
+    @Binds
+    fun bindsFilmRepository(impl: FilmRepositoryImpl): FilmRepository
 }
 
 @Module
@@ -35,6 +42,9 @@ interface ApiModule {
 
     @Binds
     fun bindsPlanetApi(impl: PlanetApiImpl): PlanetApi
+
+    @Binds
+    fun bindsFilmApi(impl: FilmApiImpl): FilmApi
 }
 
 @Module

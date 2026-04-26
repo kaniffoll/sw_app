@@ -3,6 +3,7 @@ package com.kaniffoll.di
 import android.content.Context
 import com.kaniffoll.domain.usecase.GetCharacterByIdUseCase
 import com.kaniffoll.domain.usecase.GetCharactersUseCase
+import com.kaniffoll.domain.usecase.GetFilmsByUrlsUseCase
 import com.kaniffoll.domain.usecase.GetPlanetByUrlUseCase
 import dagger.BindsInstance
 import dagger.Component
@@ -14,7 +15,9 @@ interface AppComponent {
 
     fun getCharactersUseCase(): GetCharactersUseCase
     fun getCharacterByIdUseCase(): GetCharacterByIdUseCase
-    fun getPlanetsByUrlUseCase(): GetPlanetByUrlUseCase
+    fun getPlanetByUrlUseCase(): GetPlanetByUrlUseCase
+
+    fun getFilmsByUrlUseCase(): GetFilmsByUrlsUseCase
 
     @Component.Builder
     interface Builder {
