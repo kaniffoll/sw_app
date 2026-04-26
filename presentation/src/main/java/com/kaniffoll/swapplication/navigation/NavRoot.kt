@@ -1,15 +1,29 @@
 package com.kaniffoll.swapplication.navigation
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
+import com.kaniffoll.swapplication.R
 import com.kaniffoll.swapplication.di.viewmodel.ViewModelFactory
 import com.kaniffoll.swapplication.navigation.model.Route
 import com.kaniffoll.swapplication.ui.screens.character.CharacterDetails
@@ -18,6 +32,7 @@ import com.kaniffoll.swapplication.ui.screens.character.CharactersListViewModel
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavRoot(
     factory: ViewModelFactory,
@@ -35,7 +50,17 @@ fun NavRoot(
         Route.CharsList
     )
 
-    Scaffold { innerPadding ->
+    var providedTitle by remember { mutableStateOf("") }
+
+    Scaffold(
+        topBar = {
+            SWTopAppBar(
+                entry = rootBackStack.last() as Route,
+                providedTitle = providedTitle,
+                onIconClick = { rootBackStack.removeAt(rootBackStack.lastIndex) }
+            )
+        }
+    ) { innerPadding ->
 
         NavDisplay(
             modifier = modifier.padding(innerPadding),
@@ -43,12 +68,59 @@ fun NavRoot(
             entryProvider = entryProvider {
                 entry<Route.CharsList> {
                     val viewModel: CharactersListViewModel = viewModel(factory = factory)
-                    CharactersList(viewModel)
+                    CharactersList(viewModel) {
+                        rootBackStack.add(Route.CharsDetails(it))
+                    }
                 }
                 entry<Route.CharsDetails> {
-                    CharacterDetails()
+                    CharacterDetails(
+                        id = it.id,
+                        provideTitle = { title -> providedTitle = title }
+                    )
                 }
             }
         )
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SWTopAppBar(
+    modifier: Modifier = Modifier,
+    entry: Route,
+    providedTitle: String = "",
+    onIconClick: () -> Unit = {}
+) {
+    var isList by remember { mutableStateOf(true) }
+
+    val title = when (entry) {
+        is Route.CharsList -> {
+            isList = true
+            stringResource(R.string.characters)
+        }
+        is Route.CharsDetails -> {
+            isList = false
+            providedTitle
+        }
+    }
+
+    TopAppBar(
+        modifier = modifier,
+        title = {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = title,
+                textAlign = TextAlign.Center
+            )
+        },
+        navigationIcon = {
+            if (!isList) {
+                Icon(
+                    painter = painterResource(R.drawable.baseline_arrow_back_24),
+                    contentDescription = stringResource(R.string.arrow_back),
+                    modifier = Modifier.clickable(onClick = onIconClick)
+                )
+            }
+        }
+    )
 }

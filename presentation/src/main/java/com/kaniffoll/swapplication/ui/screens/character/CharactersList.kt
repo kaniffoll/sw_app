@@ -25,7 +25,8 @@ import io.github.ahmad_hamwi.compose.pagination.PaginatedLazyColumn
 @Composable
 fun CharactersList(
     viewModel: CharactersListViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onCardClick: (id: Int) -> Unit
 ) {
     val paginationState = viewModel.paginationState
 
@@ -47,7 +48,7 @@ fun CharactersList(
         items(
             paginationState.allItems!!,
         ) { item ->
-            CharacterCard(item)
+            CharacterCard(character = item, onClick = onCardClick)
         }
     }
 }
@@ -55,11 +56,13 @@ fun CharactersList(
 @Composable
 private fun CharacterCard(
     character: Character,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (id: Int) -> Unit
 ) {
     OutlinedCard(
         modifier = modifier.fillMaxWidth(),
-        shape = ShapeDefaults.Small
+        shape = ShapeDefaults.Small,
+        onClick = { onClick(character.id) }
     ) {
         val paramsMap = mapOf(
             R.string.height to character.height,

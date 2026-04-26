@@ -6,4 +6,6 @@
     <string name="mass">Mass</string>
     <string name="gender">Gender</string>
     <string name="skin_color">Skin color</string>
+    <string name="characters">Characters</string>
+    <string name="arrow_back">Arrow back</string>
 </resources>

@@ -5,6 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun CharacterDetails(modifier: Modifier = Modifier) {
+fun CharacterDetails(
+    id: Int,
+    provideTitle: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    provideTitle("Hello from details")
     Text("DETAILS")
 }

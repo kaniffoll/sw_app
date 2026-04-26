@@ -10,5 +10,5 @@ sealed interface Route: NavKey {
     data object CharsList: Route, NavKey
 
     @Serializable
-    data object CharsDetails: Route, NavKey
+    data class CharsDetails(val id: Int): Route, NavKey
 }
