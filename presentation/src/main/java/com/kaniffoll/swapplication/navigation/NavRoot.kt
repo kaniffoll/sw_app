@@ -62,7 +62,10 @@ fun NavRoot(
             SWTopAppBar(
                 entry = rootBackStack.last() as Route,
                 providedTitle = providedTitle,
-                onIconClick = { rootBackStack.removeAt(rootBackStack.lastIndex) }
+                onIconClick = {
+                    rootBackStack.removeAt(rootBackStack.lastIndex)
+                    providedTitle = ""
+                }
             )
         }
     ) { innerPadding ->
