@@ -2,4 +2,8 @@
     <string name="app_name">SW Application</string>
     <string name="unknown_error">Unknown error</string>
     <string name="retry">Retry</string>
+    <string name="height">Height</string>
+    <string name="mass">Mass</string>
+    <string name="gender">Gender</string>
+    <string name="skin_color">Skin color</string>
 </resources>
