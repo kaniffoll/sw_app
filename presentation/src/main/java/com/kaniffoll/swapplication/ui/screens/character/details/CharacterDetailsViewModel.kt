@@ -1,9 +1,10 @@
 package com.kaniffoll.swapplication.ui.screens.character.details
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kaniffoll.domain.model.Character
 import com.kaniffoll.domain.usecase.GetCharacterByIdUseCase
+import com.kaniffoll.domain.usecase.GetPlanetByUrlUseCase
 import com.kaniffoll.swapplication.model.toUI
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -14,34 +15,38 @@ import kotlinx.coroutines.launch
 
 class CharacterDetailsViewModel @AssistedInject constructor(
     @Assisted val id: Int,
-    private val useCase: GetCharacterByIdUseCase
+    private val getCharUseCase: GetCharacterByIdUseCase,
+    private val getPlanetsUseCase: GetPlanetByUrlUseCase
 ) : ViewModel() {
 
     private var _character = MutableStateFlow<CharacterState>(CharacterState.IDLE)
     val character = _character.asStateFlow()
 
     init {
-        Log.d("VM", "INIT")
         loadState()
     }
 
     fun loadState() {
         viewModelScope.launch {
-            val result = useCase(id)
-            result.fold(
-                onSuccess = {
-                    _character.value = CharacterState.Success(it.toUI())
-                },
-                onFailure = {
-                    _character.value = CharacterState.Error(it as Exception)
-                }
-            )
+            val result = getCharUseCase(id)
+            result.fold(onSuccess = {
+                _character.value = CharacterState.Success(it.toUI())
+                loadAdditionalInfo(it)
+            }, onFailure = {
+                _character.value = CharacterState.Error(it as Exception)
+            })
         }
     }
 
-    override fun onCleared() {
-        Log.d("VM", "CLEARED")
-        super.onCleared()
+    suspend fun loadAdditionalInfo(character: Character) {
+        val result = getPlanetsUseCase(character.homeworld!!)
+        if (result.isSuccess && _character.value is CharacterState.Success) {
+            val tmp = (_character.value as CharacterState.Success).character
+            _character.value =
+                CharacterState.Success(
+                    tmp.copy(homeworld = result.getOrNull()!!)
+                )
+        }
     }
 
     @AssistedFactory

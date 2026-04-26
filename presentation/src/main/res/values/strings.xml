@@ -16,4 +16,5 @@
     <string name="additional_information">Additional information</string>
     <string name="hair_color">Hair color</string>
     <string name="eye_color">Eye color</string>
+    <string name="homeworld">Homeworld</string>
 </resources>

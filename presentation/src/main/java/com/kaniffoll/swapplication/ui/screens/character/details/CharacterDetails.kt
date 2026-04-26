@@ -2,6 +2,7 @@ package com.kaniffoll.swapplication.ui.screens.character.details
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,6 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.kaniffoll.domain.model.Planet
 import com.kaniffoll.swapplication.R
 import com.kaniffoll.swapplication.model.CharacterUI
 import com.kaniffoll.swapplication.ui.components.CustomCircularProgressIndicator
@@ -60,10 +62,7 @@ private fun MainContent(
         verticalArrangement = Arrangement.spacedBy(Dimens.medium)
     ) {
         item {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(Dimens.small2)
-            ) {
+            ContentColumn {
                 Text(stringResource(R.string.basic_info))
 
                 val basicMap = mapOf(
@@ -83,10 +82,7 @@ private fun MainContent(
         }
 
         item {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(Dimens.small2)
-            ) {
+            ContentColumn {
                 Text(stringResource(R.string.species))
                 if (character.species.isEmpty()) {
                     NoInfoCard()
@@ -99,10 +95,7 @@ private fun MainContent(
         }
 
         item {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(Dimens.small2)
-            ) {
+            ContentColumn {
                 Text(stringResource(R.string.films))
                 if (character.films.isEmpty()) {
                     NoInfoCard()
@@ -115,10 +108,7 @@ private fun MainContent(
         }
 
         item {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(Dimens.small2)
-            ) {
+            ContentColumn {
                 Text(stringResource(R.string.additional_information))
                 InfoCard(
                     title = stringResource(R.string.hair_color),
@@ -130,7 +120,42 @@ private fun MainContent(
                 )
             }
         }
+
+        item {
+            ContentColumn {
+                Text(stringResource(R.string.homeworld))
+                if (character.homeworld != null) PlanetCard(character.homeworld) else NoInfoCard()
+            }
+        }
     }
+}
+
+@Composable
+private fun PlanetCard(
+    planet: Planet,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = ShapeDefaults.Small,
+    ) {
+        Text(
+            modifier = Modifier.padding(Dimens.medium),
+            text = planet.name
+        )
+    }
+}
+
+@Composable
+private fun ContentColumn(
+    modifier: Modifier = Modifier,
+    content: @Composable (ColumnScope.() -> Unit)
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(Dimens.small2),
+        content = content
+    )
 }
 
 @Composable

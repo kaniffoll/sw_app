@@ -10,7 +10,9 @@ import com.kaniffoll.data.remote.api.palnet.PlanetApi
 import com.kaniffoll.data.remote.api.palnet.PlanetApiImpl
 import com.kaniffoll.data.remote.http.HttpClientProvider
 import com.kaniffoll.data.repo.CharacterRepositoryImpl
+import com.kaniffoll.data.repo.PlanetRepositoryImpl
 import com.kaniffoll.domain.repo.CharacterRepository
+import com.kaniffoll.domain.repo.PlanetRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -21,6 +23,9 @@ import jakarta.inject.Singleton
 interface RepoModule {
     @Binds
     fun bindsCharacterRepository(impl: CharacterRepositoryImpl): CharacterRepository
+
+    @Binds
+    fun bindsPlanetRepository(impl: PlanetRepositoryImpl): PlanetRepository
 }
 
 @Module
