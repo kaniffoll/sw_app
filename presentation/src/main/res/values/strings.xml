@@ -8,4 +8,8 @@
     <string name="skin_color">Skin color</string>
     <string name="characters">Characters</string>
     <string name="arrow_back">Arrow back</string>
+    <string name="basic_info">Basic information</string>
+    <string name="species">Species</string>
+    <string name="films">Films</string>
+    <string name="birth_year">Birth year</string>
 </resources>

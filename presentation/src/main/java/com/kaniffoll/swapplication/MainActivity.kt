@@ -8,6 +8,7 @@ import com.kaniffoll.di.AppComponentProvider
 import com.kaniffoll.swapplication.di.DaggerMainActivityComponent
 import com.kaniffoll.swapplication.di.viewmodel.ViewModelFactory
 import com.kaniffoll.swapplication.navigation.NavRoot
+import com.kaniffoll.swapplication.ui.screens.character.details.CharacterDetailsViewModel
 import com.kaniffoll.swapplication.ui.theme.SWApplicationTheme
 import jakarta.inject.Inject
 
@@ -15,6 +16,12 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var factory: ViewModelFactory
+
+    //Очевидно не самое лучшее решение,
+    //но с dagger2 достаточно сложно работать в связке c compose.
+    //В теории можно создать универсальную фабрику
+    @Inject
+    lateinit var charVMFactory: CharacterDetailsViewModel.Factory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +33,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SWApplicationTheme {
-                NavRoot(factory)
+                NavRoot(
+                    mainFactory = factory,
+                    charFactory = charVMFactory
+                )
             }
         }
     }

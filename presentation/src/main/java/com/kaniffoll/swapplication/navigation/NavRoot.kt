@@ -18,15 +18,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.kaniffoll.swapplication.R
 import com.kaniffoll.swapplication.di.viewmodel.ViewModelFactory
 import com.kaniffoll.swapplication.navigation.model.Route
-import com.kaniffoll.swapplication.ui.screens.character.CharacterDetails
+import com.kaniffoll.swapplication.ui.screens.character.details.CharacterDetails
+import com.kaniffoll.swapplication.ui.screens.character.details.CharacterDetailsViewModel
+import com.kaniffoll.swapplication.ui.screens.character.details.CharacterDetailsViewModelFactory
 import com.kaniffoll.swapplication.ui.screens.character.CharactersList
 import com.kaniffoll.swapplication.ui.screens.character.CharactersListViewModel
 import kotlinx.serialization.modules.SerializersModule
@@ -35,7 +39,8 @@ import kotlinx.serialization.modules.polymorphic
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavRoot(
-    factory: ViewModelFactory,
+    mainFactory: ViewModelFactory,
+    charFactory: CharacterDetailsViewModel.Factory,
     modifier: Modifier = Modifier
 ) {
     val rootBackStack = rememberNavBackStack(
@@ -65,16 +70,26 @@ fun NavRoot(
         NavDisplay(
             modifier = modifier.padding(innerPadding),
             backStack = rootBackStack,
+            entryDecorators = listOf(
+                rememberSaveableStateHolderNavEntryDecorator(),
+                rememberViewModelStoreNavEntryDecorator()
+            ),
             entryProvider = entryProvider {
                 entry<Route.CharsList> {
-                    val viewModel: CharactersListViewModel = viewModel(factory = factory)
+                    val viewModel: CharactersListViewModel = viewModel(factory = mainFactory)
                     CharactersList(viewModel) {
                         rootBackStack.add(Route.CharsDetails(it))
                     }
                 }
                 entry<Route.CharsDetails> {
+                    val viewModel: CharacterDetailsViewModel = viewModel(
+                        factory = CharacterDetailsViewModelFactory(
+                            assistedFactory = charFactory,
+                            id = it.id
+                        )
+                    )
                     CharacterDetails(
-                        id = it.id,
+                        viewModel = viewModel,
                         provideTitle = { title -> providedTitle = title }
                     )
                 }
@@ -85,7 +100,7 @@ fun NavRoot(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SWTopAppBar(
+private fun SWTopAppBar(
     modifier: Modifier = Modifier,
     entry: Route,
     providedTitle: String,
