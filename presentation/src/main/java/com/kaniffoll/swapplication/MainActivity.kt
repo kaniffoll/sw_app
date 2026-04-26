@@ -4,19 +4,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
 import com.kaniffoll.di.AppComponentProvider
 import com.kaniffoll.swapplication.di.DaggerMainActivityComponent
-import com.kaniffoll.swapplication.ui.screens.character.CharactersList
-import com.kaniffoll.swapplication.ui.screens.character.CharactersListViewModel
+import com.kaniffoll.swapplication.di.viewmodel.ViewModelFactory
+import com.kaniffoll.swapplication.navigation.NavRoot
 import com.kaniffoll.swapplication.ui.theme.SWApplicationTheme
 import jakarta.inject.Inject
 
 class MainActivity : ComponentActivity() {
+
     @Inject
-    lateinit var charactersListViewModel: CharactersListViewModel
+    lateinit var factory: ViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,12 +26,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SWApplicationTheme {
-                Scaffold {
-                    CharactersList(
-                        modifier = Modifier.padding(it),
-                        viewModel = charactersListViewModel
-                    )
-                }
+                NavRoot(factory)
             }
         }
     }
