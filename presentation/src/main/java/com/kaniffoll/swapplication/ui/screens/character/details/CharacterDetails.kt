@@ -14,8 +14,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.kaniffoll.domain.model.Character
 import com.kaniffoll.swapplication.R
+import com.kaniffoll.swapplication.model.CharacterUI
 import com.kaniffoll.swapplication.ui.components.CustomCircularProgressIndicator
 import com.kaniffoll.swapplication.ui.components.ErrorIndicator
 import com.kaniffoll.swapplication.ui.res.Dimens
@@ -48,12 +48,11 @@ fun CharacterDetails(
             )
         }
     }
-
 }
 
 @Composable
 private fun MainContent(
-    character: Character,
+    character: CharacterUI,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(

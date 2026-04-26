@@ -4,13 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kaniffoll.domain.model.Character
 import com.kaniffoll.domain.usecase.GetCharactersUseCase
+import com.kaniffoll.swapplication.model.CharacterUI
+import com.kaniffoll.swapplication.model.toUI
 import io.github.ahmad_hamwi.compose.pagination.PaginationState
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class CharactersListViewModel @Inject constructor(private val getCharactersUseCase: GetCharactersUseCase) :
     ViewModel() {
-    val paginationState = PaginationState<String?, Character>(
+    val paginationState = PaginationState<String?, CharacterUI>(
         initialPageKey = null,
         onRequestPage = { loadPage(it) }
     )
@@ -25,7 +27,7 @@ class CharactersListViewModel @Inject constructor(private val getCharactersUseCa
                     onSuccess = {
                         val page = result.getOrNull()!!
                         paginationState.appendPage(
-                            items = page.items,
+                            items = page.items.map { it.toUI() },
                             nextPageKey = page.nextKey,
                             isLastPage = page.nextKey == null
                         )

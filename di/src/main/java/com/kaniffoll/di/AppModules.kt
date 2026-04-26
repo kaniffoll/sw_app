@@ -6,6 +6,8 @@ import com.kaniffoll.data.local.RoomRes
 import com.kaniffoll.data.local.SWDatabase
 import com.kaniffoll.data.remote.api.character.CharacterApi
 import com.kaniffoll.data.remote.api.character.CharacterApiImpl
+import com.kaniffoll.data.remote.api.palnet.PlanetApi
+import com.kaniffoll.data.remote.api.palnet.PlanetApiImpl
 import com.kaniffoll.data.remote.http.HttpClientProvider
 import com.kaniffoll.data.repo.CharacterRepositoryImpl
 import com.kaniffoll.domain.repo.CharacterRepository
@@ -25,6 +27,9 @@ interface RepoModule {
 interface ApiModule {
     @Binds
     fun bindsCharacterApi(impl: CharacterApiImpl): CharacterApi
+
+    @Binds
+    fun bindsPlanetApi(impl: PlanetApiImpl): PlanetApi
 }
 
 @Module

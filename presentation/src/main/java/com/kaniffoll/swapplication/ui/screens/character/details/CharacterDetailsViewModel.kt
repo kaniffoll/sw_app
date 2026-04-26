@@ -3,8 +3,8 @@ package com.kaniffoll.swapplication.ui.screens.character.details
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kaniffoll.domain.model.Character
 import com.kaniffoll.domain.usecase.GetCharacterByIdUseCase
+import com.kaniffoll.swapplication.model.toUI
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -30,7 +30,7 @@ class CharacterDetailsViewModel @AssistedInject constructor(
             val result = useCase(id)
             result.fold(
                 onSuccess = {
-                    _character.value = CharacterState.Success(it)
+                    _character.value = CharacterState.Success(it.toUI())
                 },
                 onFailure = {
                     _character.value = CharacterState.Error(it as Exception)
