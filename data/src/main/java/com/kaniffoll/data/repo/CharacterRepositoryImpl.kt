@@ -31,10 +31,13 @@ class CharacterRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCharacterById(id: Int): Result<Character> {
-        return try {
-            Result.success(api.getCharacterById(id).toCharacter())
+        try {
+            if (connectivityObserver.isNetworkAvailable())
+                return Result.success(api.getCharacterById(id).toCharacter())
+
+            return Result.success(dao.getCharacterById(id).toCharacter())
         } catch (e: Exception) {
-            Result.failure(e)
+            return Result.failure(e)
         }
     }
 
