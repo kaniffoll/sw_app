@@ -88,20 +88,14 @@ fun NavRoot(
 fun SWTopAppBar(
     modifier: Modifier = Modifier,
     entry: Route,
-    providedTitle: String = "",
+    providedTitle: String,
     onIconClick: () -> Unit = {}
 ) {
-    var isList by remember { mutableStateOf(true) }
+    val isList = entry is Route.CharsList
 
     val title = when (entry) {
-        is Route.CharsList -> {
-            isList = true
-            stringResource(R.string.characters)
-        }
-        is Route.CharsDetails -> {
-            isList = false
-            providedTitle
-        }
+        is Route.CharsList -> stringResource(R.string.characters)
+        is Route.CharsDetails -> providedTitle
     }
 
     TopAppBar(
