@@ -16,7 +16,12 @@ fun CharacterDto.toCharacter(): Character {
         skinColor = skinColor,
         eyeColor = eyeColor,
         birthYear = birthYear,
-        gender = gender
+        gender = gender,
+        homeworld = homeworld,
+        films = films,
+        species = species,
+        vehicles = vehicles,
+        starships = starships
     )
 }
 
