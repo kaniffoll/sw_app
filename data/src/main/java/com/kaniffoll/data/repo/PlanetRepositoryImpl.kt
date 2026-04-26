@@ -9,7 +9,7 @@ import jakarta.inject.Inject
 class PlanetRepositoryImpl @Inject constructor(private val planetApi: PlanetApi): PlanetRepository {
     override suspend fun getPlanetByUrl(url: String): Result<Planet> {
         try {
-            val res = planetApi.getPlanet(url)
+            val res = planetApi.getByUrl(url)
             return Result.success(res.toPlanet())
         } catch (e: Exception) {
             return Result.failure(e)

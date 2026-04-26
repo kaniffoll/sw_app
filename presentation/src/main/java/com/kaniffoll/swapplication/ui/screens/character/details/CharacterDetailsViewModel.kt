@@ -6,6 +6,7 @@ import com.kaniffoll.domain.model.Character
 import com.kaniffoll.domain.usecase.GetCharacterByIdUseCase
 import com.kaniffoll.domain.usecase.GetFilmsByUrlsUseCase
 import com.kaniffoll.domain.usecase.GetPlanetByUrlUseCase
+import com.kaniffoll.domain.usecase.GetSpeciesByIdUseCase
 import com.kaniffoll.swapplication.model.toUI
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -18,11 +19,12 @@ class CharacterDetailsViewModel @AssistedInject constructor(
     @Assisted val id: Int,
     private val getCharUseCase: GetCharacterByIdUseCase,
     private val getPlanetUseCase: GetPlanetByUrlUseCase,
-    private val getFilmsUseCase: GetFilmsByUrlsUseCase
+    private val getFilmsUseCase: GetFilmsByUrlsUseCase,
+    private val getSpeciesUseCase: GetSpeciesByIdUseCase
 ) : ViewModel() {
 
-    private var _character = MutableStateFlow<CharacterState>(CharacterState.IDLE)
-    val character = _character.asStateFlow()
+    private var _characterState = MutableStateFlow<CharacterState>(CharacterState.IDLE)
+    val characterState = _characterState.asStateFlow()
 
     init {
         loadState()
@@ -32,10 +34,10 @@ class CharacterDetailsViewModel @AssistedInject constructor(
         viewModelScope.launch {
             val result = getCharUseCase(id)
             result.fold(onSuccess = {
-                _character.value = CharacterState.Success(it.toUI())
+                _characterState.value = CharacterState.Success(it.toUI())
                 loadAdditionalInfo(it)
             }, onFailure = {
-                _character.value = CharacterState.Error(it as Exception)
+                _characterState.value = CharacterState.Error(it as Exception)
             })
         }
     }
@@ -43,11 +45,11 @@ class CharacterDetailsViewModel @AssistedInject constructor(
     suspend fun loadAdditionalInfo(character: Character) {
         val planetRes = getPlanetUseCase(character.homeworld!!)
 
-        check(_character.value is CharacterState.Success)
+        check(_characterState.value is CharacterState.Success)
 
         if (planetRes.isSuccess) {
-            val tmp = (_character.value as CharacterState.Success).character
-            _character.value =
+            val tmp = (_characterState.value as CharacterState.Success).character
+            _characterState.value =
                 CharacterState.Success(
                     tmp.copy(homeworld = planetRes.getOrNull()!!)
                 )
@@ -55,10 +57,19 @@ class CharacterDetailsViewModel @AssistedInject constructor(
 
         val filmResults = getFilmsUseCase(character.films)
         if (filmResults.all { it.isSuccess }) {
-            val tmp = (_character.value as CharacterState.Success).character
-            _character.value =
+            val tmp = (_characterState.value as CharacterState.Success).character
+            _characterState.value =
                 CharacterState.Success(
                     tmp.copy(films = filmResults.map { it.getOrNull()!! })
+                )
+        }
+
+        val speciesResults = getSpeciesUseCase(character.species)
+        if (speciesResults.all { it.isSuccess }) {
+            val tmp = (_characterState.value as CharacterState.Success).character
+            _characterState.value =
+                CharacterState.Success(
+                    tmp.copy(species = speciesResults.map { it.getOrNull()!! })
                 )
         }
     }

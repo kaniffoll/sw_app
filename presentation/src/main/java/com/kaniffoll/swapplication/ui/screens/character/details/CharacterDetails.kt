@@ -28,7 +28,7 @@ fun CharacterDetails(
     provideTitle: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val characterState by viewModel.character.collectAsState()
+    val characterState by viewModel.characterState.collectAsState()
 
     when (val state = characterState) {
         is CharacterState.Error -> {

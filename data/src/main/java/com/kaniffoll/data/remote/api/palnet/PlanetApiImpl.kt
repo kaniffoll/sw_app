@@ -7,7 +7,7 @@ import io.ktor.client.request.get
 import jakarta.inject.Inject
 
 class PlanetApiImpl @Inject constructor(private val client: HttpClient): PlanetApi {
-    override suspend fun getPlanet(url: String): PlanetDto {
+    override suspend fun getByUrl(url: String): PlanetDto {
         return client.get(url).body()
     }
 }

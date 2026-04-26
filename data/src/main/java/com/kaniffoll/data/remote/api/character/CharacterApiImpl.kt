@@ -2,6 +2,7 @@ package com.kaniffoll.data.remote.api.character
 
 import com.kaniffoll.data.remote.RemoteRes.BASE_URL
 import com.kaniffoll.data.remote.RemoteRes.PEOPLE_PATH
+import com.kaniffoll.data.remote.RemoteRes.SEARCH_PATH
 import com.kaniffoll.data.remote.model.ApiResponse
 import com.kaniffoll.data.remote.model.CharacterDto
 import io.ktor.client.HttpClient
@@ -19,7 +20,12 @@ class CharacterApiImpl @Inject constructor(
     }
 
     override suspend fun getCharacterById(id: Int): CharacterDto {
-        val response = client.get("${BASE_URL}$PEOPLE_PATH/${id}/")
+        val response = client.get("$BASE_URL$PEOPLE_PATH/${id}/")
+        return response.body()
+    }
+
+    override suspend fun searchByName(name: String): ApiResponse<CharacterDto> {
+        val response = client.get("$BASE_URL$PEOPLE_PATH$SEARCH_PATH$name")
         return response.body()
     }
 }

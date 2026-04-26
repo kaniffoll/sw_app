@@ -41,11 +41,30 @@ class CharacterRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun searchByName(name: String, next: String?): Result<Page<Character>> {
+        try {
+            val res = if (next != null) {
+                api.getCharacters(next)
+            } else  {
+                api.searchByName(name)
+            }
+
+            return Result.success(
+                Page(
+                    items = res.results.map { it.toCharacter() },
+                    nextKey = res.next
+                )
+            )
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
+    }
+
     private suspend fun getCharsApiRequest(url: String?): Page<Character> {
         val req = url ?: "$BASE_URL$PEOPLE_PATH/"
         val response = api.getCharacters(req)
 
-        dao.saveCharacters(response.results.map { it.toEntity() } )
+        dao.saveCharacters(response.results.map { it.toEntity() })
         return Page(
             items = response.results.map { it.toCharacter() }, nextKey = response.next
         )
